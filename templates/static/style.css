@@ -1,0 +1,256 @@
+/* 背景画像 */
+.bg-image{
+    display: block;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    z-index: -1;
+
+    background-color: rgba(0, 0, 0, 0.467);
+  }
+  .img-main{    
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+  
+    /* スマホ用画面幅 仮 */
+    min-height: 140vh;
+  }
+  
+
+
+  /* コンテンツ幅 */
+  .cover-container {
+    max-width: 70vw;
+  }
+
+
+
+
+  .back{
+    /* 画面いっぱいに背景画像を貼り付ける */
+    background-size: cover;
+    position: relative;
+    height:100%;
+  }
+  .back::before{
+    /* 透過した黒を上から重ねるイメージ */
+    background-color: rgba(0, 0, 0, 0.623);
+    /* 自由に位置指定 */
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    content: ' ';
+  }
+
+
+  /* カード */
+  .card-set {
+    width: 23vw;
+        --bs-card-spacer-y: 1rem;
+        --bs-card-spacer-x: 1rem;
+        --bs-card-title-spacer-y: 0.5rem;
+        --bs-card-title-color: ;
+        --bs-card-subtitle-color: ;
+        --bs-card-border-width: var(--bs-border-width);
+        --bs-card-border-color: var(--bs-border-color-translucent);
+        --bs-card-border-radius: var(--bs-border-radius);
+        --bs-card-box-shadow: ;
+        --bs-card-inner-border-radius: calc(var(--bs-border-radius) - (var(--bs-border-width)));
+        --bs-card-cap-padding-y: 0.5rem;
+        --bs-card-cap-padding-x: 1rem;
+        --bs-card-cap-bg: rgba(var(--bs-body-color-rgb), 0.03);
+        --bs-card-cap-color: ;
+        --bs-card-height: ;
+        --bs-card-color: ;
+        --bs-card-bg: var(--bs-body-bg);
+        --bs-card-img-overlay-padding: 1rem;
+        --bs-card-group-margin: 0.75rem;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        height: var(--bs-card-height);
+        word-wrap: break-word;
+        background-clip: border-box;
+        border: var(--bs-card-border-width) solid var(--bs-card-border-color);
+        border-radius: var(--bs-card-border-radius);
+    }
+
+    /* カード画像 */
+    .card-img{
+        height: 150px;
+    }
+
+    /* カード モーダル ボタン */
+    .btn-set{
+        margin: 3px;
+        border: 1px solid #FFF;
+        background: transparent;
+        color: #ffffff;
+    }
+
+    /* カード モーダル クローズ */
+    .btn-close-set {
+        box-sizing: content-box;
+        width: 10px;
+        height: 10px;
+        padding: 0.25em 0.25em;
+        color: #FFF;
+        background: transparent ;
+        border: 0;
+        border-radius: 0.375rem;
+    }
+
+    /* カード モーダル 画像 */
+    .modal-img {
+        width: 100%;
+    }
+
+    /* カード モーダル 背景 */
+    .modal-content-set {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        color: var(--bs-modal-color);
+        pointer-events: auto;
+        background-color: rgba(1, 5, 114, 0.663);
+        background-clip: padding-box;
+        border: var(--bs-modal-border-width) solid var(--bs-modal-border-color);
+        border-radius: var(--bs-modal-border-radius);
+        outline: 0;
+    }
+
+    /* カード モーダル 商品詳細 */
+    .products-description{
+        margin: 10px;
+    }
+
+    /* リンクをボタン風に変更する */
+    .like-button-set{
+        display: block;
+        text-decoration: none;
+        transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+        border: 1px solid;
+        padding-left: 5px;
+        padding-right: 5px;
+        height: 18px;
+        color: #FFF;
+    }
+
+    /* メニューライン */
+    .nav-set {
+        display: flex;
+        flex-wrap: wrap;
+        list-style: none;
+        align-items: center;
+    }
+
+
+
+
+    /* 買い物カゴ モーダル 画像 */
+    .purchase_modal-img {
+        width: 50%;
+    }
+
+    /* 買い物カゴ モーダル 背景 */
+    .purchase_modal-content-set {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        color: var(--bs-modal-color);
+        pointer-events: auto;
+        background-color: rgba(73, 0, 84, 0.663);
+        background-clip: padding-box;
+        border: var(--bs-modal-border-width) solid var(--bs-modal-border-color);
+        border-radius: var(--bs-modal-border-radius);
+        outline: 0;
+    }
+
+    /* 買い物カゴ モーダル 設定 */
+    .purchase_modal-body {
+        position: relative;
+        padding: var(--bs-modal-padding);
+        display: flex;
+    }
+
+    /* 買い物カゴ モーダル flexの余白削除*/
+    .purchase_modal-body ul{
+        flex-grow: 1;
+    }
+
+    /* 買い物カゴ モーダル 金額の文字サイズ*/
+    .purchase_modal-body p.name_price{
+        font-size: 25px;
+    }
+
+    /* 買い物カゴ モーダル リストの設定*/
+    .purchase_modal-body li{
+        list-style:none;
+    }
+
+    /* 買い物カゴ モーダル テキスト右or左寄せ*/
+    .purchase_modal-body p.right{
+        text-align: right;
+    }
+    .purchase_modal-body p.left{
+        text-align: left;
+    }
+
+
+    /* 買い物カゴ モーダル 設定*/
+    .purchase_total_price{
+        display: flex;
+        justify-content: flex-end;
+        font-size: 25px;
+    }
+    /* 買い物カゴ モーダル 合計金額*/
+    .purchase_total_price_number{
+        text-align: center;
+        font-size: 25px;
+        padding-right: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    /* 買い物カゴ モーダル 合計¥*/
+    .purchase_total_price_setting{
+        text-align: center;
+        font-size: 25px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    /* 買い物カゴ モーダル 数量*/
+    .purchase_number{
+        display: flex;
+    }
+    .purchase_number_title{
+        font-size: 10px;
+    }
+    .purchase_number input{
+        height: 15px;
+        width: 23px;
+    }
+
+    /* 買い物カゴ モーダル 再計算*/
+    .purchase_recalculation_btn-set{
+        margin: 3px;
+        border: 1px solid #FFF;
+        background: transparent;
+        color: #ffffff;
+        width: 45px;
+        margin: 10px;
+    }
+    /* .purchase_recalculation{
+        padding: 10px;
+    } */
