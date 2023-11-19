@@ -1,6 +1,552 @@
 {%- extends "layout.html" %}
 {%- block content %}
 
-{{ fuck }}
+
+
+{% for num in range(purchase_list|length) %}
+<div class="purchase_modal-body purchase_makesure_body">
+    <img src="{{ purchase_list[num][2] }}" class="purchase_modal-img" alt="...">
+
+    <ul>
+        <li>
+            <p class="name_price left">{{ purchase_list[num][1] }}</p>
+        </li>
+        <li>
+            <p class="name_price right">¥{{ purchase_list[num][3] }}</p>
+        </li>
+        <li>
+          
+          <div class="purchase_number">
+            
+            <p class="purchase_number_title">数量：</p>
+            <input type="text" value="{{ purchase_list[num][4] }}" id="purchase_total_number{{ num }}">
+          </div>
+
+        </li>
+    </ul>
+</div>
+{% endfor %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<div align="right">
+  <input type="hidden" value="{{ purchaseLS_len }}" id="purchaseLS_len">
+  <input type="button" value="再計算" id="submit" class="purchase_recalculation_btn-set" onclick="send_to_PTPajax()">
+</div>
+
+<div class="purchase_total_price">
+    <p class="purchase_total_price_setting">合計　¥</p>
+    <p id="purchase_total_prices" value="{{ num_select }}" class="purchase_total_price_number">{{ total_price }}</p>
+</div>
+
+
+<div class="purchase_option">
+
+    <!-- 受け取り方法 -->
+    <div class="purchase_makesure_address_info">
+        <div class="purchase_makesure_address_info-set">
+            <h1>受け取り場所</h1>
+            <input type="hidden" value="{{ member_infoLS_len }}" id="member_infoLS_len">
+            <input type="button" value="変更" id="submit" class="purchase_recalculation_btn-set" onclick="appearButton_receive()">
+        </div> 
+        
+        <ul id="form_area">
+            {% for info_num in range(member_name|length) %}
+            <li>
+                <div class="purchase_makesure_new_addresslist">
+                    <input type="radio" name="receive_address" value="{{ member_infoLS_len }}">
+
+                    <div>
+                        <!-- 名前 -->
+                        <p id="nameaddress_name_view{{ info_num }}" class="purchase_makesure_address_info_nameaddress_view">{{ member_name[info_num] }}</p>
+                        <input type="text" id="nameaddress_name{{ info_num }}" value="{{ member_name[info_num] }}" class="purchase_makesure_address_info_nameaddress">
+
+                        <!-- member-id -->
+                        <input type="hidden" id="nameaddress_id{{ info_num }}" value="{{ member_id[info_num] }}" class="purchase_makesure_address_info_nameaddress">
+
+                        <!-- 住所 -->
+                        <p id="nameaddress_address_view{{ info_num }}" class="purchase_makesure_address_info_nameaddress_view">{{ member_address[info_num] }}</p>
+                        <input type="text" id="nameaddress_address{{ info_num }}" value="{{ member_address[info_num] }}" class="purchase_makesure_address_info_nameaddress">            
+                    </div>
+                </div>
+
+                <form action="/onlineshop_receive_delete" method="POST">
+                    <button type="submit" class="purchase_recalculation_btn-set" value="nameaddress_name_and_address{{ info_num }}" name="post">削除</button>
+                </form>
+                <!-- <input type="button" id="nameaddress_name_and_address{{ info_num }}" class="purchase_recalculation_btn-set" value="受け取り情報削除"></input> -->
+
+            </li>
+            {% endfor %}
+            
+        </ul>
+        <input type="button" value="住所追加" id="submit" class="purchase_address_add_btn-set" onclick="add_inputform()">
+    </div>
+    
+    <!-- 支払い方法 -->
+    <div class="purchase_makesure_payment_info">
+        <div class="purchase_makesure_payment_info-set">
+            <h1>支払い方法</h1>
+            <input type="button" value="変更" id="submit" class="purchase_makesure_payment_info_credit_button purchase_recalculation_btn-set" onclick="appearButton_payment_howtoreceive_receivetime()">
+        </div>
+        
+                <p>支払い方法</p>
+                <ul>
+                    <li><input type="radio" name="payment" id="pay_store" value="コンビニ払い" checked  onclick="removeButton_payment()">コンビニ払い</li>
+                    <li><input type="radio" name="payment" id="pay_card" value="クレジットカード" onclick="appearButton_payment()">クレジットカード</li>
+        
+                    <div id="new_cards">
+
+                        {% for num in range(member_creditcard|length) %}
+                        <div class="creditcard_choiselist">
+                            <input type="radio" name="choice_creditcard" id="choose_credit_card" value="{{ num + 1 }}" class="purchase_makesure_payment_info_credit_view">
+            
+                            <div>
+                                <div style="display: flex;">
+                                    <p class="purchase_makesure_payment_info_credit_view">末尾</p>
+                                    <p class="purchase_makesure_payment_info_credit_view" id="creditcard_id{{ num }}">{{ member_creditcard[num][-4:] }}</p>
+                                </div>
+                                <input type="text" value="{{ member_creditcard[num] }}" id="creditcard{{ num }}" class="purchase_makesure_payment_info_credit">
+                            </div>
+                        </div>
+                        
+                        {% endfor %}
+                    </div>
+        
+                </ul>
+
+                <!-- 新規クレジット登録 -->
+                <input type="button" value="クレジットカード新規登録" id="submit" class="purchase_address_add_btn-set purchase_makesure_payment_info_credit_addform_button" onclick="add_creditcard_inputform()">
+                <!-- <input type="button" value="クレジットカード編集キャンセル" class="purchase_address_add_btn-set purchase_makesure_payment_info_credit_addform_button" onclick="removeButton_payment()"> -->
+        
+        <p>受け取り方法</p>
+        <ul>
+            <li><input type="radio" name="receive_item" value="対面" checked>対面</li>
+            <li><input type="radio" name="receive_item" value="置き配">置き配</li>
+        </ul>
+        
+        <p>受け取り可能時間帯</p>
+        <ul>
+            <li>
+                <p>お届け予定日:{{ auto_delivery_date }}</p>
+            </li>
+            <li>
+                <p>お届け希望日:</p>
+                <select name="example1">
+                    <option value="サンプル1">選択肢のサンプル1</option>
+                    <option value="サンプル2">選択肢のサンプル2</option>
+                    <option value="サンプル3">選択肢のサンプル3</option>
+                    <option value="サンプル4">選択肢のサンプル4</option>
+                    <option value="サンプル5">選択肢のサンプル5</option>
+                </select>
+            </li>
+        </ul>
+        <ul>
+            <li><input type="radio" name="receive_time" value="9-12" checked>9:00〜12:00</li>
+            <li><input type="radio" name="receive_time" value="13-16">13:00〜16:00</li>
+            <li><input type="radio" name="receive_time" value="17-21">17:00〜21:00</li>
+        </ul>
+        
+        ・受け取り可能時間帯 +日付も！
+    </div>
+</div>
+
+
+
+
+
+
+
+<div align="right">
+    <!-- <input type="button" value="購入" id="submit" class="purchase_recalculation_btn-set" onclick="send_to_PTPajax()"> -->
+    <a class="like-button-set purchase_decide" href="/purchase_done">購入</a>
+</div>
+
+
+
+  <script type="text/javascript">
+
+    function send_to_PTPajax() {
+
+      // データ受信
+      var purchaseLS_len = $("#purchaseLS_len").val();
+
+      var list = []
+      for (let num = 0; num <= (purchaseLS_len-1); num++){
+        number_id = '#purchase_total_number' + num
+        number = $(number_id).val()
+
+
+        product_id = '#purchase_product_id' + num
+        product_id = $(product_id).val()
+
+        number_with_tag = product_id + "," + number
+        list.push(number_with_tag);
+
+        $.ajax("/onlineshop_ajax", {
+          type: "post",
+          data: {"data": list[num]}
+          })        
+          .done(function(received_data) {           // 戻ってきたのはJSON（文字列）
+            var dict = JSON.parse(received_data);   // JSONを連想配列にする
+            var total_price = dict["total_price"];
+            
+            $("#purchase_total_prices").html(total_price);           // html要素を書き換える
+
+          });
+      };
+    };
+
+    // 受け取り場所 名前 住所 フォーム表示
+    function appearButton_receive(){
+        // inputクラスがあったら
+        if($('.purchase_makesure_address_info_nameaddress').hasClass("input")){
+            $('.purchase_makesure_address_info_nameaddress').removeClass("input");
+            $('.purchase_makesure_address_info_nameaddress_view').removeClass("input");              
+
+            // 住所追加ボタン 非表示
+            $('.purchase_address_add_btn-set').removeClass("input");
+
+            // inputとラジオボタンセットが何個あるかカウント
+            let formset_count = $(".purchase_makesure_new_addresslist").length;
+
+            for (let num = 0; num <= (formset_count - 1); num++){
+
+                member_id_id = '#nameaddress_id' + num;
+                member_id = $(member_id_id).val();
+
+                //新規フォームで追加された時、識別方法としてmember_idに0を付与
+                if (member_id === undefined || member_id === null || member_id === ''){ 
+                    member_id = '0'
+                 }
+                
+                name_id = '#nameaddress_name' + num
+                name = $(name_id).val();
+                
+                address_id = '#nameaddress_address' + num
+                address = $(address_id).val();
+                
+                console.log("値チェック",member_id, name, address);
+                $.ajax("/onlineshop_receive_ajax", {
+                    type: "post",
+                    data: {"member_id": member_id,
+                        "name": name,
+                        "address":address}
+                    })        
+                    .done(function(received_data) {           // 戻ってきたのはJSON（文字列）
+                        var dict = JSON.parse(received_data);   // JSONを連想配列にする
+                        var member_id_value = dict["member_id"];
+                        var member_name_value = dict["member_name"];
+                        var member_address_value = dict["member_address"];
+                        
+                        var name_view_id = '#nameaddress_name_view' + num
+                        var address_view_id = '#nameaddress_address_view' + num
+
+                        $(name_view_id).html(member_name_value[num]);           // html要素を書き換える
+                        $(address_view_id).html(member_address_value[num]);           // html要素を書き換える
+
+                        $(member_id_id).html(member_id_value[num]);           // html要素を書き換える
+                        $(name_id).html(member_name_value[num]);           // html要素を書き換える
+                        $(address_id).html(member_address_value[num]);           // html要素を書き換える
+
+
+                        // 住所追加で作成したフォーム非表示
+                        $('.purchase_makesure_address_info_nameaddress_addform').addClass("input");              
+                        $('.purchase_makesure_address_info_nameaddress_addform_view').removeClass("input");              
+
+                        // 住所追加クリック前のデータ数
+                        var member_infoLS_len = $("#member_infoLS_len").val();
+                        if (member_infoLS_len <= num){
+
+                            // 住所追加で増えて枠だけあるmember_idに値を付与
+                            var input_data_member_id_id = 'nameaddress_id' + num;
+                            var input_data_member_id = document.getElementById(added_member_id);
+                            input_data_member_id.value = num + 1;
+
+                        }
+                        
+                });
+            };         
+            //受け取り場所 名前 住所 編集画面 非表示
+        } else if (!$('.purchase_makesure_address_info_nameaddress').hasClass("input")){
+            $('.purchase_makesure_address_info_nameaddress').addClass("input");
+            $('.purchase_makesure_address_info_nameaddress_view').addClass("input");
+
+            $('.purchase_makesure_address_info_nameaddress_addform').removeClass("input");              
+            $('.purchase_makesure_address_info_nameaddress_addform_view').addClass("input");              
+
+            // 住所追加ボタン 表示
+            $('.purchase_makesure_address_info:has(.purchase_address_add_btn-set)').addClass("input");
+
+        }
+    }
+
+    // 受け取り場所 住所追加
+    function add_inputform(){
+
+        // idの末尾につける最終番号
+        let id_num = $(".purchase_makesure_new_addresslist").length;
+
+        // 名前と住所登録用フォーム 一括作成用 
+        var input_data_name = document.createElement('input');
+        input_data_name.type = 'text';
+        input_data_name.className = 'purchase_makesure_address_info_nameaddress_addform';
+        input_data_name.id = 'nameaddress_name' + id_num;
+          
+        var input_data_address = document.createElement('input');
+        input_data_address.type = 'text';
+        input_data_address.className = 'purchase_makesure_address_info_nameaddress_addform';
+        input_data_address.id = 'nameaddress_address' + id_num;
+        input_data_address.style = 'margin-bottom: 0.7em;';
+
+        // ビュー用
+        var input_data_name_view = document.createElement('p');
+        input_data_name_view.className = 'purchase_makesure_address_info_nameaddress_addform_view input';
+        input_data_name_view.id = 'nameaddress_name_view' + id_num;
+        
+        var input_data_address_view = document.createElement('p');
+        input_data_address_view.className = 'purchase_makesure_address_info_nameaddress_addform_view input';
+        input_data_address_view.id = 'nameaddress_address_view' + id_num;
+
+        var input_data_member_id = document.createElement('input');
+        input_data_member_id.type = 'hidden';
+        input_data_member_id.id = 'nameaddress_id' + id_num;
+        input_data_member_id.className = 'purchase_makesure_address_info_nameaddress';
+
+
+        // 一つずつフラグメントに入れないと機能しない
+        var fragment = document.createDocumentFragment();
+        fragment.appendChild(input_data_name);
+        fragment.appendChild(input_data_name_view);
+        fragment.appendChild(input_data_member_id);
+        fragment.appendChild(input_data_address);
+        fragment.appendChild(input_data_address_view);
+
+        var fragment_list = document.createElement('div');
+        fragment_list.id = 'new_lists';
+        fragment_list.append(fragment);
+
+        // リスト
+        var new_list = document.createElement('li');
+
+        // ラジオボタン
+        var radio_button = document.createElement('input');
+        radio_button.type = 'radio';
+        radio_button.className = 'receive_address'
+
+        // ラジオボタンとリスト flex
+        var flex = document.createElement('div');
+        flex.className = "purchase_makesure_new_addresslist";
+
+        flex.append(radio_button);
+        flex.append(fragment_list);
+        new_list.append(flex);
+        // new_list.append(fragment);
+
+        var parent = document.getElementById('form_area');
+        parent.appendChild(new_list);
+    }
+
+
+    // 支払い方法 クレジットカードのビュー 変更ボタン 表示    
+    function appearButton_payment(){
+        // inputクラスがなったら
+        if (!$('.purchase_makesure_payment_info_credit_view').hasClass("input")){
+            // $('.purchase_makesure_payment_info_credit').addClass("input");
+            $('.purchase_makesure_payment_info_credit_view').addClass("input"); //ビュー表示
+            $('.purchase_makesure_payment_info_credit_button').addClass("input"); //変更ボタン表示
+
+            // $('.purchase_makesure_payment_info_credit_addform_button').removeClass("input"); //新規クレカ追加ボタン表示
+
+        }
+    }
+    // 支払い方法 クレジットカードのビュー 変更ボタン 非表示    
+    function removeButton_payment(){
+        const pay_card = $("#pay_card:checked").val()
+
+        // 別ボタン(コンビニ払いボタン)を押した場合
+        if(pay_card == undefined){
+            $('.purchase_makesure_payment_info_credit').removeClass("input"); //編集フォーム非表示
+            $('.purchase_makesure_payment_info_creditexpired').removeClass("input"); //編集フォーム非表示
+            $('.purchase_makesure_payment_info_credit_view').removeClass("input"); //ビュー表示
+            $('.purchase_makesure_payment_info_credit_button').removeClass("input"); //変更ボタン非表示
+            $('.purchase_makesure_payment_info_credit_addform_button').removeClass("input"); //変更ボタン非表示
+        //新規クレジットカード登録キャンセル押した時
+        // } else if(!(pay_card == undefined)){
+        //     console.log("こっちだよー！")
+        //     $('.purchase_makesure_payment_info_credit').removeClass("input"); //編集フォーム非表示
+        //     $('.purchase_makesure_payment_info_creditexpired').removeClass("input"); //編集フォーム非表示
+
+        //     $('.purchase_makesure_payment_info_credit_view').addClass("input"); //カード番号表示
+        }
+
+    }
+    
+    // 支払い方法 クレジットカード編集フォーム表示/非表示ボタン
+    function appearButton_payment_howtoreceive_receivetime(){
+        // 編集ボタン表示 ビュー非表示
+        if ($('.purchase_makesure_payment_info_credit_view').hasClass("input") ){
+            $('.purchase_makesure_payment_info_credit').addClass("input"); //編集フォーム表示
+            $('.purchase_makesure_payment_info_creditexpired').addClass("input"); //編集フォーム表示
+            $('.purchase_makesure_payment_info_credit_view').removeClass("input"); //ビュー非表示
+            $('.purchase_makesure_payment_info_credit_addform_button').addClass("input"); //新規クレジットカード登録ボタン 表示
+
+            console.log("編集ボタン押した？")
+            let creditexpired_counter = $(".creditcard_choiselist").length; // 0〜カウント開始せず、１~カウントしている
+            console.log("カウンター",creditexpired_counter)
+
+            for (let num = 0; num <= (creditexpired_counter - 1); num++){
+                
+                console.log("num",num)
+
+                // クレカのビュー値取得
+                var creditcard_expired_id = '#creditcard_expired' + num;
+                var creditcard_expired = $(creditcard_expired_id).val();
+                
+                if ( creditcard_expired === undefined || creditcard_expired === null || creditcard_expired == 0 ){
+                    console.log("クレカ有効期限 値なしエリア",creditcard_expired)
+
+                    var creditcard_id = "#creditcard" + num
+                    var creditcard_value = $(creditcard_id).val();
+
+                    console.log("クレカの値", creditcard_value);
+                    if (!(creditcard_value === undefined || creditcard_value === null || creditcard_value === "" )){
+                        console.log("クレカ値あり:",creditcard_value,"クレカ有効期限値なし:", creditcard_expired);
+
+                        // クラス書き換え
+                        var creditcard_expired_id = "#creditcard_expired" + num;
+                        $(creditcard_expired_id).attr('class', 'purchase_makesure_payment_info_creditexpired');
+
+                    }
+                }
+                console.log("")
+            }
+            
+            // 編集ボタン非表示 ビュー表示 / 編集ずみクレジットカード データ受信 クレカ情報更新
+        }else if (!$('.purchase_makesure_payment_info_credit_view').hasClass("input")){
+            $('.purchase_makesure_payment_info_credit').removeClass("input"); //編集フォーム非表示
+            $('.purchase_makesure_payment_info_creditexpired').removeClass("input"); //編集フォーム非表示
+            $('.purchase_makesure_payment_info_credit_view').addClass("input"); //ビュー表示
+            $('.purchase_makesure_payment_info_credit_addform_button').removeClass("input"); //新規クレジットカード登録ボタン 非表示
+
+            // inputとラジオボタンセットが何個あるかカウント
+            let formset_count = $(".purchase_makesure_payment_info_credit").length;
+
+            // クレカ情報更新
+            for (let num = 0; num <= (formset_count - 1); num++){
+
+                // クレカの値取得
+                var credit_id = '#creditcard' + num;
+                var credit = $(credit_id).val();
+                
+                // クレカの有効期限 取得
+                var creditexpired_id = '#creditcard_expired' + num;
+                var creditexpired = $(creditexpired_id).val();
+
+                // 新規フォームから値入力されてるか判定し、値が何もない場合はフォームをチェックボタンごと削除
+                if (credit === undefined || credit === null || credit === "" ){
+                    var creditcard_choiselist = $(credit_id).parents(".creditcard_choiselist");
+                    creditcard_choiselist.remove();
+                }else if(creditexpired === undefined || creditexpired === null || creditexpired === "" ){
+                    var creditexpired = "0";
+                }
+
+                console.log("DB挿入予定の値", credit_id, credit, creditexpired);
+                $.ajax("/onlineshop_receive_ajax_credit", {
+                        type: "post",
+                        data: {"num": num,
+                            "creditcard": credit,
+                            "creditexpired": creditexpired,
+                        }
+                        })        
+                        .done(function(received_data) {           // 戻ってきたのはJSON（文字列）
+                            var dict = JSON.parse(received_data);   // JSONを連想配列にする
+                            var credit = dict["member_creditcard"][num].slice(-4);
+
+                            var credit_id = '#creditcard_id' + num;
+                            $(credit_id).html(credit);           // html要素を書き換える
+
+                            // クレカの有効期限 取得、非表示にする
+                            var creditexpired_id = 'creditcard_expired' + num;
+                            var creditexpired = document.getElementById(creditexpired_id);
+                            if (!(creditexpired === null)){
+                                creditexpired.remove();                                
+                            }
+                            
+                            $('#creditcard_expired').removeClass("input"); //ビュー表示
+
+                        })
+
+                }
+        }
+    }
+
+
+
+
+    // クレカ 新規追加
+    function add_creditcard_inputform(){
+
+        // idの末尾につける最終番号
+        let id_num = $(".purchase_makesure_payment_info_credit").length;
+
+        // クレジットカードと有効期限 一括作成用 
+        var input_data_cardnum = document.createElement('input');
+        input_data_cardnum.type = 'text';
+        input_data_cardnum.className = 'purchase_makesure_payment_info_credit';
+        input_data_cardnum.id = 'creditcard' + id_num;
+        input_data_cardnum.placeholder = 'クレジットカードの番号を入力';
+          
+        var input_data_cardexpired = document.createElement('input');
+        input_data_cardexpired.type = 'text';
+        input_data_cardexpired.className = 'purchase_makesure_payment_info_creditexpired';
+        input_data_cardexpired.id = 'creditcard_expired' + id_num;
+        input_data_cardexpired.style = 'margin-bottom: 0.7em;';
+        input_data_cardexpired.placeholder = 'クレジットカードの有効期限を入力';
+
+        // ビュー用
+        var input_data_cardnum_view = document.createElement('p');
+        input_data_cardnum_view.className = 'purchase_makesure_payment_info_credit_view';
+        input_data_cardnum_view.id = 'creditcard_id' + id_num;
+
+        // 一つずつフラグメントに入れないと機能しない
+        var fragment = document.createDocumentFragment();
+        fragment.appendChild(input_data_cardnum);
+        fragment.appendChild(input_data_cardexpired);
+        fragment.appendChild(input_data_cardnum_view);
+
+        // flex クレジット、有効、ビュー用 まとめ
+        var flex = document.createElement('div');
+        flex.append(fragment);
+
+
+        // flex ラジオボタン vs クレジット、有効、ビュー用
+        var list_parent = document.createElement('div');
+        list_parent.className = "creditcard_choiselist";
+
+        // ラジオボタン
+        var radio_button = document.createElement('input');
+        radio_button.type = 'radio';
+        radio_button.name = "choice_creditcard";
+        radio_button.id = 'choose_credit_card';
+        radio_button.className = 'purchase_makesure_payment_info_credit_view input';
+        radio_button.value = id_num + 1;
+
+        list_parent.append(radio_button);
+        list_parent.append(flex);
+    
+        var parent = document.getElementById('new_cards');
+        parent.appendChild(list_parent);
+
+        appearButton_payment_howtoreceive_receivetime();
+
+    }
+
+  </script>
+
+
+
+
+
+
 
 {%- endblock %}

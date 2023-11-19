@@ -244,13 +244,240 @@
 
     /* 買い物カゴ モーダル 再計算*/
     .purchase_recalculation_btn-set{
-        margin: 3px;
         border: 1px solid #FFF;
         background: transparent;
         color: #ffffff;
-        width: 45px;
         margin: 10px;
     }
-    /* .purchase_recalculation{
+
+    /* 買い物カゴ モーダル 住所追加 */
+    .purchase_address_add_btn-set{
+        display: none;
+    }
+    .purchase_address_add_btn-set.input{
+        display: block;
+        border: 1px solid #FFF;
+        background: transparent;
+        color: #ffffff;
+        padding: 1em;
+        margin-left:auto;
+    }
+
+
+    /* 購入確認 */
+    .purchase_makesure_body{
+        margin: 10px;
+    }
+
+    /* 購入確認 受け取り場所 */
+    .purchase_makesure_address_info{
+        background-color: rgba(1, 5, 114, 0.663);
         padding: 10px;
-    } */
+        border: solid #FFF;
+        width: 50%;
+        margin: 10px;
+    }
+    /* 購入確認 受け取り場所 タイトル */
+    .purchase_makesure_address_info h1{
+        text-align: left;
+    }
+    /* 購入確認 受け取り場所 変更前情報 */
+    .purchase_makesure_address_info p{
+        font-size: 15px;
+        text-align: left;
+    }
+    .purchase_makesure_address_info li{
+        list-style:none;
+        text-align: left;
+    }
+
+    /* 購入確認 受け取り場所 テキストエリア 非表示*/
+    .purchase_makesure_address_info_nameaddress{
+        display: none;
+    }
+    /* 購入確認 受け取り場所 テキストエリア 表示*/
+    .purchase_makesure_address_info_nameaddress.input{
+        display: block;
+
+        font-size: 15px;
+        text-align: left;
+        color: #FFF;
+        border: solid 1px #fff;
+        background-color: #ffffff00;
+        width: 100%;
+        padding: 12.1px;
+    }
+    /* 購入確認 受け取り場所 テキストエリア 表示*/
+    .purchase_makesure_address_info_nameaddress_view{
+        display: block;
+        padding: 10px;
+    }
+    /* 購入確認 受け取り場所 テキストエリア 非表示*/
+    .purchase_makesure_address_info_nameaddress_view.input{
+        display: none;
+    }
+    /* 購入確認 受け取り場所 テキストエリア追加 表示*/
+    .purchase_makesure_address_info_nameaddress_addform{
+        display: block;
+        
+        font-size: 15px;
+        text-align: left;
+        color: #FFF;
+        border: solid 1px #fff;
+        background-color: #ffffff00;
+        width: 100%;
+        padding: 12.1px;
+    }
+    .purchase_makesure_address_info_nameaddress_addform.input{
+        display: none;
+    }
+    /* 購入確認 受け取り場所 テキストエリア追加 ビュー 表示*/
+    .purchase_makesure_address_info_nameaddress_addform_view{
+        display: block;
+        padding: 10px;
+    }
+    .purchase_makesure_address_info_nameaddress_addform_view.input{
+        display: none;
+    }
+
+
+
+    /* 購入確認 受け取り場所 タイトル 変更ボタン 行*/
+    .purchase_makesure_address_info-set{
+        display: flex;
+        justify-content: space-between;
+    }
+
+    /* 購入確認 受け取り場所 タイトル 変更ボタン 行*/
+    .purchase_makesure_new_addresslist{
+        display: flex;
+        margin-bottom: 10px;
+    }
+
+
+    /* 受け取り方法 */
+    .purchase_makesure_body{
+        margin: 10px;
+    }
+
+    /* 購入確認 受け取り場所 */
+    .purchase_makesure_payment_info{
+        background-color: rgba(108, 1, 114, 0.663);
+        padding: 10px;
+        border: solid #FFF;
+        width: 50%;
+        margin: 10px;
+    }
+    /* 購入確認 受け取り場所 タイトル */
+    .purchase_makesure_payment_info h1{
+        text-align: left;
+    }
+    /* 購入確認 受け取り場所 変更前情報 */
+    .purchase_makesure_payment_info p{
+        font-size: 15px;
+        text-align: left;
+    }
+    /* 購入確認 受け取り場所 ラジオボタンリスト化 */
+    .purchase_makesure_payment_info li{
+        text-align: left;
+        list-style: none;
+        padding: 3px;
+    }
+
+    /* 購入確認 受け取り場所 テキストエリア 非表示*/
+    .purchase_makesure_payment_info_nameaddress{
+        visibility: hidden;
+    }
+    /* 購入確認 受け取り場所 テキストエリア 表示*/
+    .purchase_makesure_payment_info_nameaddress.input{
+        font-size: 15px;
+        text-align: right;
+        visibility: visible;
+        color: #FFF;
+        border: solid 1px #fff;
+        background-color: #ffffff00;
+    }
+
+    /* 購入確認 受け取り場所 タイトル 変更ボタン 行*/
+    .purchase_makesure_payment_info-set{
+        display: flex;
+        justify-content: space-between;
+    }
+    /* 購入確認 支払い方法 クレジット テキストエリア 非表示*/
+    .purchase_makesure_payment_info_credit{
+        display: none;
+    }
+    /* 購入確認 支払い方法 クレジット テキストエリア 表示*/
+    .purchase_makesure_payment_info_credit.input{
+        display: block;
+        font-size: 15px;
+        text-align: right;
+        color: #FFF;
+        border: solid 1px #fff;
+        background-color: #ffffff00;
+        margin-bottom: 1em;
+    }
+    /* 購入確認 支払い方法 クレジット有効期限 テキストエリア 非表示*/
+    .purchase_makesure_payment_info_creditexpired{
+        display: none;
+    }
+    /* 購入確認 支払い方法 クレジット テキストエリア 表示*/
+    .purchase_makesure_payment_info_creditexpired.input{
+        display: block;
+        font-size: 15px;
+        text-align: right;
+        color: #FFF;
+        border: solid 1px #fff;
+        background-color: #ffffff00;
+        margin-bottom: 0;
+    }
+    /* 購入確認 支払い方法 クレジット 表示 非表示*/
+    .purchase_makesure_payment_info_credit_view{
+        display: none;
+    }
+    /* 購入確認 支払い方法 クレジット テキストエリア 表示*/
+    .purchase_makesure_payment_info_credit_view.input{
+        display: block;
+        font-size: 15px;
+        text-align: right;
+        color: #FFF;
+        background-color: #ffffff00;
+    }
+    /* 購入確認 支払い方法 クレジット ボタン 非表示*/
+    .purchase_makesure_payment_info_credit_button{
+        display: none;
+    }
+    /* 購入確認 支払い方法 クレジット テキストエリア 表示*/
+    .purchase_makesure_payment_info_credit_button.input{
+        display: block;
+        color: #FFF;
+        background-color: #ffffff00;
+    }
+    /* 購入確認 支払い方法 クレジット 新規フォーム追加 ボタン 非表示*/
+    .purchase_makesure_payment_info_credit_addform_button{
+        display: none;
+    }
+    /* 購入確認 支払い方法 クレジット 新規フォーム追加 ボタン 表示*/
+    .purchase_makesure_payment_info_credit_addform_button.input{
+        display: block;
+        color: #FFF;
+        background-color: #ffffff00;
+    }
+     /* 購入確認 支払い方法 クレジット クレジットカード リスト*/
+    .creditcard_choiselist{
+        display: flex;
+        margin-left: 2em;
+    }
+
+    /* 受け取り場所 支払い方法 設定 */
+    .purchase_option{
+        display: flex;
+    }
+
+    /* 購入決定 */
+    .purchase_decide{
+        width: 4em;
+    }
+
+
+

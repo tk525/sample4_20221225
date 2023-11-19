@@ -42,53 +42,84 @@
                   <button type="button" class="btn-close-set" data-bs-dismiss="modal" aria-label="Close">x</button>
                 </div>
 
-                {% for num in range(purchase_list|length) %}
-                <div class="purchase_modal-body">
-                    <img src="{{ purchase_list[num][2] }}" class="purchase_modal-img" alt="...">
 
-                    <ul>
-                        <li>
-                            <p class="name_price left">{{ purchase_list[num][1] }}</p>
-                        </li>
-                        <li>
-                            <p class="name_price right">¥{{ purchase_list[num][3] }}</p>
-                        </li>
-                        
-                        <li>
-                          
-                          <div class="purchase_number">
-                            
-                            <p class="purchase_number_title">数量：</p>
-                            <input type="text" value="{{ purchase_list[num][4] }}" id="purchase_total_price{{ num }}">
-                            <input type="hidden" value="{{ purchase_list[num][0] }}" id="purchase_product_id{{ num }}">
+<!-- データがあった場合 -->
+{% if purchase_list|length != 0 %}
 
-                          </div>
+{% for num in range(purchase_list|length) %}
+<div class="purchase_modal-body">
+    <img src="{{ purchase_list[num][2] }}" class="purchase_modal-img" alt="...">
 
-                        </li>
-                    </ul>
-                </div>
-                {% endfor %}
+    <ul>
+        <li>
+            <p class="name_price left">{{ purchase_list[num][1] }}</p>
+        </li>
+        <li>
+            <p class="name_price right">¥{{ purchase_list[num][3] }}</p>
+        </li>
+        
+        <li>
+          
+          <div class="purchase_number">
+            
+            <p class="purchase_number_title">数量：</p>
+            <input type="text" value="{{ purchase_list[num][4] }}" id="purchase_total_price{{ num }}">
+            <input type="hidden" value="{{ purchase_list[num][0] }}" id="purchase_product_id{{ num }}">
 
-                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+          </div>
 
-                <div align="right">
-                  <input type="hidden" value="{{ purchaseLS_len }}" id="purchaseLS_len">
-                  <input type="button" value="再計算" id="submit" class="purchase_recalculation_btn-set" onclick="send_to_PTPajax()">
-                </div>
+        </li>
+    </ul>
+</div>
+{% endfor %}
 
-                <div class="purchase_total_price">
-                  <p class="purchase_total_price_setting">合計　¥</p>
-                  <p id="purchase_total_price" value="{{ num_select }}" class="purchase_total_price_number">{{ total_price }}</p>
-                </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<div align="right">
+  <input type="hidden" value="{{ purchaseLS_len }}" id="purchaseLS_len">
+  <input type="button" value="再計算" id="submit" class="purchase_recalculation_btn-set" onclick="send_to_PTPajax()">
+</div>
+
+<div class="purchase_total_price">
+  <p class="purchase_total_price_setting">合計　¥</p>
+  <p id="purchase_total_price" value="{{ num_select }}" class="purchase_total_price_number">{{ total_price }}</p>
+</div>
 
 
 
+<div class="modal-footer">
+  <a class="like-button-set" href="/purchase">購入手続き</a>
+
+
+
+  <button type="button" class="btn-set" data-bs-dismiss="modal">閉じる</button>
+  
+  <!-- <form action="/onlineshop_post" method="POST">
+    <button type="submit" class="btn-set" value="product1" name="for_post">カゴに入れる</button>
+  </form> -->
+
+
+</div>
+
+{% elif purchase_list|length == 0 %}
+
+<p>商品を選択してください</p>
+
+<div class="modal-footer">
+  <button type="button" class="btn-set" data-bs-dismiss="modal">閉じる</button>
+</div>
+{% endif %}
+
+
+
+              </div>
+            </div>
+          </div>
 
                   <script type="text/javascript">
                     function send_to_PTPajax() {
 
                       // データ受信
-                      // var total_price_data = $("#purchase_total_pricez").val();                      
                       var purchaseLS_len = $("#purchaseLS_len").val();
 
                       var list = []
@@ -118,27 +149,7 @@
                             };
                           };
 
-</script>
-
-
-
-
-
-                <div class="modal-footer">
-                  <button type="button" class="btn-set" data-bs-dismiss="modal">閉じる</button>
-                  
-                  <!-- <form action="/onlineshop_post" method="POST">
-                    <button type="submit" class="btn-set" value="product1" name="for_post">カゴに入れる</button>
-                </form> -->
-                <a class="like-button-set" href="/purchase">購入手続き</a>
-
-
-                </div>
-
-              </div>
-            </div>
-          </div>
-
+                  </script>
 
 
 
@@ -153,6 +164,7 @@
           {%- block content %}{% endblock %}
 
           <p>トップに戻るボタン作成予定</p>
+          <p>⭐️ログインid紐付け</p>
 
                   
         </body>

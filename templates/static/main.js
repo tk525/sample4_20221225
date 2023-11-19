@@ -14,3 +14,6 @@ signs.forEach(el => {
     mixupInterval(el)
   })
 })
+// ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑v何これ
+
+
